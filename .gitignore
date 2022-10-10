@@ -21,3 +21,6 @@ typechain
 
 .DS_Store
 .openzeppelin/unknown-1337.json
+
+#privateKey
+secret.json

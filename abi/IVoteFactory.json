@@ -1,0 +1,31 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_totalAudience",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_rewardPresenter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_rewardAudience",
+        "type": "uint256"
+      }
+    ],
+    "name": "createVote",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "voteAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
