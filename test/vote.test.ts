@@ -1,4 +1,4 @@
-import { deployAllContracts } from "./deploy";
+import { deployAllContracts } from "../scripts/deploy_example";
 import { Vote, VoteFactory } from "../typechain";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { ethers } from "hardhat";

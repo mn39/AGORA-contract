@@ -20,6 +20,12 @@ interface IAgoraToken {
    */
   function name() external view virtual returns (string memory);
 
+
+
+
+
+
+
   /**
    * @dev Returns the symbol of the token, usually a shorter version of the
    * name.
