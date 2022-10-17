@@ -1,43 +1,68 @@
-//SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.15;
 
 import "./interface/IVoteFactory.sol";
+
+import "./interface/IView.sol";
+import "./interface/IVote.sol";
 import "./Vote.sol";
 
 contract VoteFactory is IVoteFactory {
-  // 투표 index -> 투표 컨트랙트 주소
-  mapping(uint256 => address) public getVote;
-  // 투표 컨트랙트 주소 => 컨트랙 존재 유무 //
-  mapping(address => bool) public isVote;
-  uint256 public countVote;
+  address private _viewAddress;
+  mapping(uint256 => uint256) private _voteCount;
+  mapping(uint256 => mapping(uint256 => address)) private _voteAddress;
 
-  // event PairCreated(address indexed token0, address indexed token1, address pair, uint256);
+  modifier onlyAdmin(address caller) {
+    require(IView(_viewAddress).isAdmin(caller) == true, "You are not admin");
+    _;
+  }
 
-  constructor() {}
+  function getViewAddress() external view returns (address) {
+    return _viewAddress;
+  }
 
-  function initialize() external {
-    countVote = 0;
+  function getVoteCount(uint256 govId) external view returns (uint256) {
+    return _voteCount[govId];
+  }
+
+  function getVoteAdress(uint256 govId, uint256 voteId) external view returns (address) {
+    return _voteAddress[govId][voteId];
+  }
+
+  function setViewAddress(address newView) external onlyAdmin(msg.sender) returns (address) {
+    _viewAddress = newView;
   }
 
   function createVote(
-    uint256 _totalAudience,
-    uint256 _rewardPresenter,
-    uint256 _rewardAudience
-  ) external returns (address voteAddr) {
-    uint256 localCountVote = countVote;
+    uint256 govId,
+    uint256 voteId,
+    uint256 requiredTime
+  ) external returns (address) {
+    require(_voteCount[govId] == voteId, "Invalid vote id");
 
-    bytes memory bytecode = type(Vote).creationCode;
-    bytes32 salt = keccak256(abi.encodePacked(localCountVote));
-    assembly {
-      voteAddr := create2(0, add(bytecode, 32), mload(bytecode), salt)
-    }
+    Vote vote = new Vote();
+    vote.initialize(govId, voteId, requiredTime);
 
-    IVote(voteAddr).initialize(_totalAudience, _rewardPresenter, _rewardAudience);
+    _voteCount[govId]++;
+    _voteAddress[govId][voteId] = address(vote);
 
-    getVote[localCountVote] = voteAddr;
-    isVote[voteAddr] = true;
+    return address(vote);
+  }
 
-    countVote = localCountVote + 1;
-    // emit VoteCreated();
+  function createVote(
+    uint256 govId,
+    uint256 voteId,
+    uint256 requiredTime,
+    uint8 optionCount,
+    bytes32[] optionNames
+  ) external returns (address) {
+    require(_voteCount[govId] == voteId, "Invalid vote id");
+
+    Vote vote = new Vote();
+    vote.initialize(govId, voteId, requiredTime, optionCount, optionNames);
+
+    _voteCount[govId]++;
+    _voteAddress[govId][voteId] = address(vote);
+
+    return address(vote);
   }
 }
