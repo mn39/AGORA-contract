@@ -5,9 +5,8 @@
   "main": "index.js",
   "repository": "https://git.swmgit.org/swm-13-main/13_swm91/governance-tool-contract.git",
   "author": "sjy0175 <sjy0175@gmail.com>",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "scripts": {
-    "prepare": "husky install",
     "build": "export $(cat env/.hardhat.env | xargs) && npx hardhat compile",
     "solint": "npx solhint 'src/**/*.sol' --fix",
     "size:contract": "export $(cat env/.hardhat.env | xargs) && npx hardhat size-contracts --no-compile",
@@ -66,7 +65,8 @@
       "git add"
     ]
   },
-  "devDependencies": {
-    "husky": "8.0.1"
-  }
+  "eslintIgnore": [
+    "common/*",
+    "upgrade/*"
+  ]
 }

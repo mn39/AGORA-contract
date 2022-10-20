@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: UNLICENSED
+
 pragma solidity ^0.8.15;
 
 import "./interface/IVoteFactory.sol";
@@ -35,12 +37,13 @@ contract VoteFactory is IVoteFactory {
   function createVote(
     uint256 govId,
     uint256 voteId,
-    uint256 requiredTime
+    uint256 requiredTime,
+    address author
   ) external returns (address) {
     require(_voteCount[govId] == voteId, "Invalid vote id");
 
     Vote vote = new Vote();
-    vote.initialize(govId, voteId, requiredTime);
+    vote.initialize(govId, voteId, requiredTime, author, _viewAddress);
 
     _voteCount[govId]++;
     _voteAddress[govId][voteId] = address(vote);
@@ -52,13 +55,14 @@ contract VoteFactory is IVoteFactory {
     uint256 govId,
     uint256 voteId,
     uint256 requiredTime,
+    address author,
     uint8 optionCount,
-    bytes32[] optionNames
+    bytes32[] calldata optionNames
   ) external returns (address) {
     require(_voteCount[govId] == voteId, "Invalid vote id");
 
     Vote vote = new Vote();
-    vote.initialize(govId, voteId, requiredTime, optionCount, optionNames);
+    vote.initializeOptioned(govId, voteId, requiredTime, author, optionCount, optionNames, _viewAddress);
 
     _voteCount[govId]++;
     _voteAddress[govId][voteId] = address(vote);

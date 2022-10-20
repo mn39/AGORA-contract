@@ -1,9 +1,10 @@
+// SPDX-License-Identifier: UNLICENSED
+
 pragma solidity ^0.8.15;
 
 import "./interface/IVote.sol";
 
 import "./interface/IView.sol";
-import "./AgoraToken.sol";
 import "./interface/IAgoraToken.sol";
 
 contract Vote is IVote {
@@ -28,58 +29,65 @@ contract Vote is IVote {
   struct Option {
     string _name;
     uint256 _stake;
-    mapping(address => uint256) _perStake;
   }
 
-  mapping(uint256 => Option) private _optionStatus;
+  mapping(uint8 => mapping(address => uint256)) private _perStake;
+
+  mapping(uint8 => Option) private _optionStatus;
 
   function initialize(
     uint256 govId,
     uint256 voteId,
     uint256 requiredTime,
+    address author,
     address viewAddress
-  ) {
-    require(_initialized == false, "already initialzied");
+  ) public {
+    require(_initialized == false, "already initialized");
     _initialized = true;
 
     _viewAddress = viewAddress;
 
     _govId = govId;
     _voteId = voteId;
-    _created = now;
+    _created = block.timestamp;
     _deadline = _created + requiredTime * 1 hours;
 
     _isEnable = true;
     _result = 0;
+
+    _author = author;
 
     _totalStake = 0;
 
     _optionCount = 0;
 
     _optionStatus[0] = Option("for", 0);
-    _optionStatus[1] = Option("against", 1);
+    _optionStatus[1] = Option("against", 0);
   }
 
-  function initialize(
+  function initializeOptioned(
     uint256 govId,
     uint256 voteId,
     uint256 requiredTime,
+    address author,
     uint8 optionCount,
-    bytes32[] optionNames,
+    bytes32[] calldata optionNames,
     address viewAddress
-  ) {
-    require(_initialized == false, "already initialzied");
+  ) public {
+    require(_initialized == false, "already initialized");
     _initialized = true;
 
     _viewAddress = viewAddress;
 
     _govId = govId;
     _voteId = voteId;
-    _created = now;
+    _created = block.timestamp;
     _deadline = _created + requiredTime * 1 hours;
 
     _isEnable = true;
     _result = 0;
+
+    _author = author;
 
     _totalStake = 0;
 
@@ -98,6 +106,14 @@ contract Vote is IVote {
     return _voteId;
   }
 
+  function getCreated() external view returns (uint256) {
+    return _created;
+  }
+
+  function getDeadline() external view returns (uint256) {
+    return _deadline;
+  }
+
   function isOption() external view returns (bool) {
     return (_optionCount != 0);
   }
@@ -111,7 +127,7 @@ contract Vote is IVote {
 
     _transferToken(amount);
 
-    _optionStatus[option]._perStake[msg.sender] += amount;
+    _perStake[option][msg.sender] += amount;
     _optionStatus[option]._stake += amount;
     _totalStake += amount;
 
@@ -120,7 +136,7 @@ contract Vote is IVote {
     return true;
   }
 
-  function voteResult() external view returns (string) {
+  function voteResult() external view returns (string memory) {
     return _optionStatus[_result]._name;
   }
 
@@ -139,8 +155,8 @@ contract Vote is IVote {
   }
 
   function _transferToken(uint256 amount) private {
-    address agoraTokenAddress = IView(_viewAddress).getTokenAddress;
-    IAgoraToken(agoraTokenAddress).transfer(this, amount);
+    address agoraTokenAddress = IView(_viewAddress).getTokenAddress();
+    IAgoraToken(agoraTokenAddress).transfer(address(this), amount);
   }
 
   function _renewResult() private {

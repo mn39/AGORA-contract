@@ -1,20 +1,133 @@
 [
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "option",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Vote",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "result",
+        "type": "string"
+      }
+    ],
+    "name": "VoteFinished",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "created",
+        "type": "uint256"
+      }
+    ],
+    "name": "VoteStart",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "getCreated",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getDeadline",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getGovId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getVoteId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_totalAudience",
+        "name": "govId",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "_rewardPresenter",
+        "name": "voteId",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "_rewardAudience",
+        "name": "requiredTime",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "author",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "viewAddress",
+        "type": "address"
       }
     ],
     "name": "initialize",
@@ -25,16 +138,96 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "govId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "voteId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "requiredTime",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
-        "name": "_audience",
+        "name": "author",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "optionCount",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32[]",
+        "name": "optionNames",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "address",
+        "name": "viewAddress",
         "type": "address"
       }
     ],
-    "name": "voteAudience",
+    "name": "initializeOptioned",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "caller",
+        "type": "address"
+      }
+    ],
+    "name": "isAuthor",
     "outputs": [
       {
         "internalType": "bool",
-        "name": "result",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "isOption",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "option",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "voteOne",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
         "type": "bool"
       }
     ],
@@ -46,46 +239,9 @@
     "name": "voteResult",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "enum IVote.State",
-            "name": "_state",
-            "type": "uint8"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_totalAudience",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_approvedAudience",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_startTime",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_endTime",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_rewardPresenter",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_rewardAudience",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct IVote.VoteState",
-        "name": "voteState",
-        "type": "tuple"
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "stateMutability": "view",

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: UNLICENSED
+
 pragma solidity ^0.8.15;
 
 interface IAgoraToken {
@@ -18,19 +20,13 @@ interface IAgoraToken {
   /**
    * @dev Returns the name of the token.
    */
-  function name() external view virtual returns (string memory);
-
-
-
-
-
-
+  function name() external view returns (string memory);
 
   /**
    * @dev Returns the symbol of the token, usually a shorter version of the
    * name.
    */
-  function symbol() external view virtual returns (string memory);
+  function symbol() external view returns (string memory);
 
   /**
    * @dev Returns the number of decimals used to get its user representation.

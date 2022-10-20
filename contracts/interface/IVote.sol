@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: UNLICENSED
+
 pragma solidity ^0.8.15;
 
 interface IVote {
@@ -9,15 +11,17 @@ interface IVote {
     uint256,
     uint256,
     uint256,
+    address,
     address
   ) external;
 
-  function initialize(
+  function initializeOptioned(
     uint256,
     uint256,
     uint256,
+    address,
     uint8,
-    bytes32[],
+    bytes32[] calldata,
     address
   ) external;
 
@@ -25,11 +29,15 @@ interface IVote {
 
   function getVoteId() external view returns (uint256);
 
+  function getCreated() external view returns (uint256);
+
+  function getDeadline() external view returns (uint256);
+
   function isOption() external view returns (bool);
 
   function isAuthor(address) external view returns (bool);
 
   function voteOne(uint8, uint256) external returns (bool);
 
-  function voteResult() external view returns (string);
+  function voteResult() external view returns (string memory);
 }
