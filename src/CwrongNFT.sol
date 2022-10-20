@@ -1,7 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-contract CwrongNFT is ERC721 {
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+// import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+
+contract CwrongNFT is ERC721, Ownable {
   string private _name;
   string private _symbol;
   mapping(address => uint256) private _ownerId;
@@ -29,9 +34,11 @@ contract CwrongNFT is ERC721 {
     return owner;
   }
 
-  function tokenURI(uint256 tokenId) public view returns (string memory) {}
+  function tokenURI(uint256 tokenId) public view returns (string memory) {
+    return _getTokenURI(tokenId);
+  }
 
-  function transfer(
+  function Transfer(
     address from,
     address to,
     uint256 tokenId
@@ -39,5 +46,15 @@ contract CwrongNFT is ERC721 {
     require(_isApprovedOrOwner(msg.sender, tokenId), "ERC721: transfer caller is not owner nor approved");
 
     _transferFrom(from, to, tokenId);
+  }
+
+  function mintTokenCollection(string _tokenURI) public {
+    uint256 newTokenId = _getNextTokenId();
+    _mint(msg.sender, newTokenId);
+    _setTokenURI(newTokenId, _tokenURI);
+  }
+
+  function _getNextTokenId() private view returns (uint256) {
+    return totalSupply().add(1);
   }
 }
