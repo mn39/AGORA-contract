@@ -1,33 +1,35 @@
 pragma solidity ^0.8.15;
 
 interface IVote {
-    enum State {
-        Ongoing,
-        Approved,
-        Rejected
-    }
+  event VoteStart(uint256 created);
+  event Vote(address, uint8 option, uint256 amount);
+  event VoteFinished(string result);
 
-    struct VoteState {
-        State _state;
-        uint256 _totalAudience;
-        uint256 _approvedAudience;
-        uint256 _startTime;
-        uint256 _endTime;
-        uint256 _rewardPresenter;
-        uint256 _rewardAudience;
-    }
+  function initialize(
+    uint256,
+    uint256,
+    uint256,
+    address
+  ) external;
 
-    // event VoteStart(uint256 _timestamp);
+  function initialize(
+    uint256,
+    uint256,
+    uint256,
+    uint8,
+    bytes32[],
+    address
+  ) external;
 
-    // event VoteResult(uint256 _timestamp, uint256 _totalAudience, uint256 _approvedAudience, State _result);
+  function getGovId() external view returns (uint256);
 
-    function initialize(
-        uint256 _totalAudience,
-        uint256 _rewardPresenter,
-        uint256 _rewardAudience
-    ) external;
+  function getVoteId() external view returns (uint256);
 
-    function voteAudience(address _audience) external returns (bool);
+  function isOption() external view returns (bool);
 
-    function voteResult() external view returns (VoteState memory);
+  function isAuthor(address) external view returns (bool);
+
+  function voteOne(uint8, uint256) external returns (bool);
+
+  function voteResult() external view returns (string);
 }
