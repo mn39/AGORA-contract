@@ -11,10 +11,6 @@ contract GovDatabase is IGovDatabase {
   mapping(uint256 => address) private _govAddresses;
   uint256 private _govCount;
 
-  constructor(address viewAddress) {
-    _viewAddress = viewAddress;
-  }
-
   modifier onlyAdmin() {
     require(IView(_viewAddress).isAdmin(msg.sender), "You are not admin");
     _;

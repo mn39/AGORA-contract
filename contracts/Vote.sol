@@ -63,6 +63,8 @@ contract Vote is IVote {
 
     _optionStatus[0] = Option("for", 0);
     _optionStatus[1] = Option("against", 0);
+
+    emit VoteStart(_created);
   }
 
   function initializeOptioned(
@@ -96,6 +98,8 @@ contract Vote is IVote {
       string memory optionName = _bytes32ToString(optionNames[i]);
       _optionStatus[i] = Option(optionName, 0);
     }
+
+    emit VoteStart(_created);
   }
 
   function getGovId() external view returns (uint256) {
@@ -132,6 +136,8 @@ contract Vote is IVote {
     _totalStake += amount;
 
     _renewResult();
+
+    emit Vote(msg.sender, option, amount);
 
     return true;
   }

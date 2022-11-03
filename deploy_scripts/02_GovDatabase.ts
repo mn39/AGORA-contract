@@ -7,18 +7,18 @@ async function main() {
   console.log("Deploying contracts with the account:", deployer.address);
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const AgoraToken = await hre.ethers.getContractFactory("AgoraToken");
-  const agoraToken = await AgoraToken.deploy();
+  const GovDatabase = await hre.ethers.getContractFactory("GovDatabase");
+  const govDatabase = await GovDatabase.deploy();
 
-  await agoraToken.deployed();
+  await govDatabase.deployed();
 
-  console.log("Your deployed contract address:", agoraToken.address);
+  console.log("Your deployed contract address:", govDatabase.address);
 
   const buffer = fs.readFileSync("./deployedAddress.json");
   const data = buffer.toString();
   const dict = JSON.parse(data);
 
-  dict.AgoraToken = agoraToken.address;
+  dict.GovDatabase = govDatabase.address;
 
   const dictJSON = JSON.stringify(dict);
   fs.writeFileSync("./deployedAddress.json", dictJSON);
@@ -30,3 +30,5 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
+
+export {};

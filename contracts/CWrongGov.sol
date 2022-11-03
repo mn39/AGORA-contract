@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "./CWrongNFT.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "./CwrongNFT.sol";
+import "./interface/IView.sol";
+import "./interface/IVoteFactory.sol";
+import "./interface/ICwrongGov.sol";
 
-contract CwrongNFT is ERC721, Ownable, CWrongNFT {
-  address private _viewAddress;
+contract CwrongGov is CwrongNFT, ICwrongGov {
   uint256 private _govId;
-  string private _name;
+  string private _govName;
   address private _leader;
   uint256 private _voteCount;
   uint256 private _proposalCount;
@@ -18,136 +18,126 @@ contract CwrongNFT is ERC721, Ownable, CWrongNFT {
   mapping(uint256 => address) private _fundingAddresses;
   uint256 private _presentBalance;
   uint256 private _totalBalance;
-  struct govRules {
-    ;
+
+  modifier onlyLeader() {
+    require(msg.sender == _leader, "You are not leader");
+    _;
   }
 
-  constructor(
-    address memory viewAddress, 
-  uint256 memory govId, 
-  string memory name, 
-  address memory leader, 
-  uint256 memory voteCount,
-  uint256 memory proposalCount,
-  uint256 memory fundingCount,
-  uint256 memory presentBalance,
-  uint256 memory totalBalance
-  ) {
-   _viewAddress = viewAddress;
-   _govId =  govId;
-   _name = name;
-   _leader = leader;
-   _voteCount = voteCount;
-   _proposalCount = proposalCount;
-   _fundingCount = fundingCount;
-   _presentBalance = presentBalance;
-   _totalBalance = totalBalance;
+  constructor(uint256 govId, string memory govName) {
+    _govId = govId;
+    _govName = govName;
+    _leader = ownerOf(0);
+    _voteCount = 0;
+    _proposalCount = 0;
+    _fundingCount = 0;
+    _presentBalance = 0;
+    _totalBalance = 0;
   }
 
-  function getViewAddress() external view returns(address) {
-    return _viewAddress;
-  }
-
-  function getGovId() external view returns(uint256) {
+  function getGovId() external view returns (uint256) {
     return _govId;
   }
 
-  function getGovName() external view returns(string) {
-    return _name;
+  function getGovName() external view returns (string memory) {
+    return _govName;
   }
 
-  function getGovLeader() external view returns(address) {
+  function getGovLeader() external view returns (address) {
     return _leader;
   }
 
-  function isGovLeader(address addressId) external view returns(bool) {
-    if(addressId == _leader) return true;
+  function isGovLeader(address addr) external view returns (bool) {
+    if (addr == _leader) return true;
 
     return false;
   }
 
-  function getMemberCount() external view returns(uint256) {
-    
+  function getMemberCount() external view returns (uint256) {
+    return totalSupply();
   }
 
-  function isGovMember(address addressId) external view returns(bool) {
-
+  function isGovMember(address addr) external view returns (bool) {
+    return (_ownerId[addr] != 0) ? true : false;
   }
 
-  function getVoteCount() external view returns(uint256) {
-
+  function getVoteCount() external view returns (uint256) {
+    return _voteCount;
   }
 
-  function getProposalCount() external view returns(uint256) {
+  function getProposalCount() external view returns (uint256) {
     return _proposalCount;
   }
 
-  function getFundingCount() external view returns(uint256) {
+  function getFundingCount() external view returns (uint256) {
     return _fundingCount;
   }
 
-  function getVoteAddress(uint256 voteId) external view returns(address) {
-    return _voteAddresses[voteId];
+  function getVoteAddress(uint256 voteID) external view returns (address) {
+    require(voteID < _voteCount, "Invalid voteID");
+    return _voteAddresses[voteID];
   }
 
-  function getProposalAddress(uint256 proposalId) external view returns(address) {
-    return _proposalAddresses[proposalId];
+  function getProposalAddress(uint256 proposalID) external view returns (address) {
+    require(proposalID < _proposalCount, "Invalid proposalID");
+    return _proposalAddresses[proposalID];
   }
 
-  function getFundingAddress(uint256 fundingId) external view returns(address) {
-    return _fundingAddresses[fundingId];
+  function getFundingAddress(uint256 fundingID) external view returns (address) {
+    require(fundingID < _fundingCount, "Invalid fundingID");
+    return _fundingAddresses[fundingID];
   }
 
-  function getPresentBalance() external view returns(uint256) {
+  function getPresentBalance() external view returns (uint256) {
     return _presentBalance;
   }
 
-  function getTotalBalance() external view returns(uint256) {
+  function getTotalBalance() external view returns (uint256) {
     return _totalBalance;
   }
 
-  function setViewAddress(address newView) external view returns(address) {
-    _viewAddress = newView;
-    return _viewAddress;
+  function setGovName(string memory govName) external onlyLeader {
+    _govName = govName;
   }
 
-  function setGovName(string name) external view returns(address) {
-    
+  function createVote(
+    uint256 govId,
+    uint256 voteID,
+    uint256 requiredTime,
+    address author
+  ) external onlyLeader returns (address) {
+    address voteFactory = IView(_viewAddress).getVoteFactoryAddress();
+    address voteAddr = IVoteFactory(voteFactory).createVote(govId, voteID, requiredTime, author);
+
+    emit VoteCreated(voteID);
+
+    return voteAddr;
   }
 
-  function createVote(uint256 gobId, uint256 voteId, uint256 requiredTime, uint8 optionCount, bytes32[] optionNames) external view returns(address) {
+  function createVote(
+    uint256 govId,
+    uint256 voteID,
+    uint256 requiredTime,
+    address author,
+    uint8 optionCount,
+    bytes32[] memory optionNames
+  ) external onlyLeader returns (address) {
+    address voteFactory = IView(_viewAddress).getVoteFactoryAddress();
+    address voteAddr = IVoteFactory(voteFactory).createVote(
+      govId,
+      voteID,
+      requiredTime,
+      author,
+      optionCount,
+      optionNames
+    );
 
+    emit VoteCreated(voteID);
+
+    return voteAddr;
   }
 
-  function createProposal() external view returns(address) {
+  function createProposal() external onlyLeader returns (address) {}
 
-  }
-
-  function createFunding() external view returns(address) {
-
-  }
-
-  function VoteCreated(uint256 voteId) {
-
-  }
-
-  function ProposalCreated(uint256 proposalId) {
-
-  }
-
-  function FundingCreated(uint256 fundingId) {
-
-  }
-
-  function VoteResult(uint256 voteId, string result) {
-
-  }
-
-  function ProposalResult(uint256 proposalId, string result) {
-
-  }
-
-  function FundingResult(uint256 fundingId, string result) {
-
-  }
+  function createFunding() external onlyLeader returns (address) {}
 }

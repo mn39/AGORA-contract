@@ -13,8 +13,8 @@ contract VoteFactory is IVoteFactory {
   mapping(uint256 => uint256) private _voteCount;
   mapping(uint256 => mapping(uint256 => address)) private _voteAddress;
 
-  modifier onlyAdmin(address caller) {
-    require(IView(_viewAddress).isAdmin(caller) == true, "You are not admin");
+  modifier onlyAdmin() {
+    require(IView(_viewAddress).isAdmin(msg.sender) == true, "You are not admin");
     _;
   }
 
@@ -30,7 +30,7 @@ contract VoteFactory is IVoteFactory {
     return _voteAddress[govId][voteId];
   }
 
-  function setViewAddress(address newView) external onlyAdmin(msg.sender) returns (address) {
+  function setViewAddress(address newView) external onlyAdmin returns (address) {
     _viewAddress = newView;
   }
 
@@ -48,6 +48,8 @@ contract VoteFactory is IVoteFactory {
     _voteCount[govId]++;
     _voteAddress[govId][voteId] = address(vote);
 
+    emit VoteCreated(govId, voteId);
+
     return address(vote);
   }
 
@@ -57,7 +59,7 @@ contract VoteFactory is IVoteFactory {
     uint256 requiredTime,
     address author,
     uint8 optionCount,
-    bytes32[] calldata optionNames
+    bytes32[] memory optionNames
   ) external returns (address) {
     require(_voteCount[govId] == voteId, "Invalid vote id");
 
@@ -66,6 +68,8 @@ contract VoteFactory is IVoteFactory {
 
     _voteCount[govId]++;
     _voteAddress[govId][voteId] = address(vote);
+
+    emit VoteCreated(govId, voteId);
 
     return address(vote);
   }
