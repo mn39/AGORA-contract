@@ -1,5 +1,6 @@
 const hre = require("hardhat");
 const fs = require("fs");
+import { ViewAddress } from "../scripts/01_ContractInfo";
 
 async function main() {
   const [deployer] = await hre.ethers.getSigners();
@@ -7,18 +8,18 @@ async function main() {
   console.log("Deploying contracts with the account:", deployer.address);
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const CwrongGov = await hre.ethers.getContractFactory("CwrongGov");
-  const cwrongGov = await CwrongGov.deploy(0, "cWrong Governance");
+  const GovDatabase = await hre.ethers.getContractFactory("GovDatabase");
+  const govDatabase = await GovDatabase.deploy(ViewAddress);
 
-  await cwrongGov.deployed();
+  await govDatabase.deployed();
 
-  console.log("Your deployed contract address:", cwrongGov.address);
+  console.log("GovDatabase contract address:", govDatabase.address);
 
   const buffer = fs.readFileSync("./deployedAddress.json");
   const data = buffer.toString();
   const dict = JSON.parse(data);
 
-  dict.CwrongGov = cwrongGov.address;
+  dict.GovDatabase = govDatabase.address;
 
   const dictJSON = JSON.stringify(dict);
   fs.writeFileSync("./deployedAddress.json", dictJSON);
@@ -31,4 +32,4 @@ main().catch((error) => {
   process.exitCode = 1;
 });
 
-export {};
+module.exports = main;

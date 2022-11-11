@@ -1,5 +1,6 @@
 const hre = require("hardhat");
 const fs = require("fs");
+import { ViewAddress } from "../scripts/01_ContractInfo";
 
 async function main() {
   const [deployer] = await hre.ethers.getSigners();
@@ -7,18 +8,18 @@ async function main() {
   console.log("Deploying contracts with the account:", deployer.address);
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const CwrongNFT = await hre.ethers.getContractFactory("CwrongNFT");
-  const cwrongNFT = await CwrongNFT.deploy();
+  const AgoraToken = await hre.ethers.getContractFactory("AgoraToken");
+  const agoraToken = await AgoraToken.deploy(ViewAddress);
 
-  await cwrongNFT.deployed();
+  await agoraToken.deployed();
 
-  console.log("Your deployed contract address:", cwrongNFT.address);
+  console.log("AgoraToken contract address:", agoraToken.address);
 
   const buffer = fs.readFileSync("./deployedAddress.json");
   const data = buffer.toString();
   const dict = JSON.parse(data);
 
-  dict.CwrongNFT = cwrongNFT.address;
+  dict.AgoraToken = agoraToken.address;
 
   const dictJSON = JSON.stringify(dict);
   fs.writeFileSync("./deployedAddress.json", dictJSON);
@@ -31,4 +32,4 @@ main().catch((error) => {
   process.exitCode = 1;
 });
 
-export {};
+module.exports = main;

@@ -1,5 +1,6 @@
 const hre = require("hardhat");
 const fs = require("fs");
+import { ViewAddress } from "../scripts/01_ContractInfo";
 
 async function main() {
   const [deployer] = await hre.ethers.getSigners();
@@ -8,11 +9,11 @@ async function main() {
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
   const VoteFactory = await hre.ethers.getContractFactory("VoteFactory");
-  const voteFactory = await VoteFactory.deploy();
+  const voteFactory = await VoteFactory.deploy(ViewAddress);
 
   await voteFactory.deployed();
 
-  console.log("Your deployed contract address:", voteFactory.address);
+  console.log("VoteFactory contract address:", voteFactory.address);
 
   const buffer = fs.readFileSync("./deployedAddress.json");
   const data = buffer.toString();
@@ -31,4 +32,4 @@ main().catch((error) => {
   process.exitCode = 1;
 });
 
-export {};
+module.exports = main;

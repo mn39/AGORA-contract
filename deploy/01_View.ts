@@ -12,7 +12,7 @@ async function main() {
 
   await view.deployed();
 
-  console.log("Your deployed contract address:", view.address);
+  console.log("View contract address:", view.address);
 
   const buffer = fs.readFileSync("./deployedAddress.json");
   const data = buffer.toString();
@@ -31,4 +31,4 @@ main().catch((error) => {
   process.exitCode = 1;
 });
 
-export {};
+module.exports = main;

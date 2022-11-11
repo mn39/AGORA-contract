@@ -1,5 +1,16 @@
 [
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "viewAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -45,7 +56,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],
@@ -89,7 +100,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],
@@ -102,7 +113,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],
@@ -126,7 +137,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],
@@ -145,7 +156,7 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "count",
         "type": "uint256"
       }
     ],
@@ -164,7 +175,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],

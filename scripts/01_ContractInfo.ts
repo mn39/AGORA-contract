@@ -1,5 +1,4 @@
-import { ethers } from "hardhat";
-import { View, GovDatabase, VoteFactory, AgoraToken, CwrongNFT } from "../deployedAddress.json";
+import { View, GovDatabase, VoteFactory, AgoraToken, CwrongNFT, CwrongGov } from "../deployedAddress.json";
 import ViewInterface from "../abi/View.json";
 import GovDatabaseInterface from "../abi/GovDatabase.json";
 import VoteFactoryInterface from "../abi/VoteFactory.json";
@@ -18,6 +17,7 @@ export {
   VoteFactory as VoteFactoryAddress,
   AgoraToken as AgoraTokenAddress,
   CwrongNFT as CwrongNFTAddress,
+  CwrongGov as CwrongGovAddress,
   ViewInterface,
   GovDatabaseInterface,
   VoteFactoryInterface,

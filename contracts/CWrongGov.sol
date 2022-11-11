@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "./CwrongNFT.sol";
 import "./interface/IView.sol";
 import "./interface/IVoteFactory.sol";
 import "./interface/ICwrongGov.sol";
+import "./CwrongNFT.sol";
 
-contract CwrongGov is CwrongNFT, ICwrongGov {
+contract CwrongGov is ICwrongGov {
+  address private _viewAddress;
+  address private _nftAddress;
   uint256 private _govId;
   string private _govName;
   address private _leader;
@@ -24,10 +26,16 @@ contract CwrongGov is CwrongNFT, ICwrongGov {
     _;
   }
 
-  constructor(uint256 govId, string memory govName) {
+  constructor(
+    uint256 govId,
+    string memory govName,
+    address viewAddress,
+    address nftAddress
+  ) {
+    _viewAddress = viewAddress;
     _govId = govId;
     _govName = govName;
-    _leader = ownerOf(0);
+    _leader = CwrongNFT(nftAddress).ownerOf(0);
     _voteCount = 0;
     _proposalCount = 0;
     _fundingCount = 0;
@@ -54,11 +62,11 @@ contract CwrongGov is CwrongNFT, ICwrongGov {
   }
 
   function getMemberCount() external view returns (uint256) {
-    return totalSupply();
+    return CwrongNFT(_nftAddress).totalSupply();
   }
 
   function isGovMember(address addr) external view returns (bool) {
-    return (_ownerId[addr] != 0) ? true : false;
+    return (CwrongNFT(_nftAddress).ownerID(addr) > 0) ? true : false;
   }
 
   function getVoteCount() external view returns (uint256) {

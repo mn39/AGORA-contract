@@ -13,25 +13,30 @@ contract VoteFactory is IVoteFactory {
   mapping(uint256 => uint256) private _voteCount;
   mapping(uint256 => mapping(uint256 => address)) private _voteAddress;
 
+  constructor(address viewAddress) {
+    _viewAddress = viewAddress;
+  }
+
   modifier onlyAdmin() {
     require(IView(_viewAddress).isAdmin(msg.sender) == true, "You are not admin");
     _;
   }
 
-  function getViewAddress() external view returns (address) {
+  function getViewAddress() external view returns (address addr) {
     return _viewAddress;
   }
 
-  function getVoteCount(uint256 govId) external view returns (uint256) {
+  function getVoteCount(uint256 govId) external view returns (uint256 count) {
     return _voteCount[govId];
   }
 
-  function getVoteAdress(uint256 govId, uint256 voteId) external view returns (address) {
+  function getVoteAdress(uint256 govId, uint256 voteId) external view returns (address addr) {
     return _voteAddress[govId][voteId];
   }
 
-  function setViewAddress(address newView) external onlyAdmin returns (address) {
+  function setViewAddress(address newView) external onlyAdmin returns (address addr) {
     _viewAddress = newView;
+    return _viewAddress;
   }
 
   function createVote(
@@ -39,7 +44,7 @@ contract VoteFactory is IVoteFactory {
     uint256 voteId,
     uint256 requiredTime,
     address author
-  ) external returns (address) {
+  ) external returns (address addr) {
     require(_voteCount[govId] == voteId, "Invalid vote id");
 
     Vote vote = new Vote();
@@ -60,7 +65,7 @@ contract VoteFactory is IVoteFactory {
     address author,
     uint8 optionCount,
     bytes32[] memory optionNames
-  ) external returns (address) {
+  ) external returns (address addr) {
     require(_voteCount[govId] == voteId, "Invalid vote id");
 
     Vote vote = new Vote();

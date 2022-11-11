@@ -49,6 +49,8 @@ const config: HardhatUserConfig = {
     goerli: {
       url: `https://eth-goerli.alchemyapi.io/v2/${alchemyApiKey}`,
       accounts: [privateKey],
+      gas: "auto",
+      gasPrice: "auto",
     },
   },
   contractSizer: {

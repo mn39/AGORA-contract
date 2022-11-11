@@ -13,19 +13,21 @@ contract AgoraToken is ERC20 {
     _;
   }
 
-  constructor() ERC20("AgoraTokenTest", "AGTT") {
+  constructor(address viewAddress) ERC20("AgoraTokenTest", "AGTT") {
     _mint(msg.sender, INITIAL_SUPPLY);
+    _viewAddress = viewAddress;
   }
 
-  function decimals() public pure override returns (uint8) {
+  function decimals() public pure override returns (uint8 deci) {
     return 0;
   }
 
-  function getViewAddress() external view returns (address) {
+  function getViewAddress() external view returns (address addr) {
     return _viewAddress;
   }
 
-  function setViewAddress(address newView) external onlyAdmin returns (address) {
+  function setViewAddress(address newView) external onlyAdmin returns (address newAddress) {
     _viewAddress = newView;
+    return _viewAddress;
   }
 }

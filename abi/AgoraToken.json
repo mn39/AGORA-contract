@@ -1,6 +1,12 @@
 [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "viewAddress",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -140,7 +146,7 @@
     "outputs": [
       {
         "internalType": "uint8",
-        "name": "",
+        "name": "deci",
         "type": "uint8"
       }
     ],
@@ -177,7 +183,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],
@@ -233,7 +239,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "newAddress",
         "type": "address"
       }
     ],

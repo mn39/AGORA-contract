@@ -38,7 +38,7 @@ interface ICwrongGov {
 
   function getTotalBalance() external view returns (uint256);
 
-  function setGovName(string calldata govName) external;
+  function setGovName(string calldata) external;
 
   function createVote(
     uint256 govId,
@@ -53,7 +53,7 @@ interface ICwrongGov {
     uint256 requiredTime,
     address author,
     uint8 optionCount,
-    bytes32[] calldata optionNames
+    bytes32[] calldata
   ) external returns (address);
 
   function createProposal() external returns (address);

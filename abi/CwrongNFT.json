@@ -1,6 +1,17 @@
 [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "viewAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "leader",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -141,7 +152,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],
@@ -198,6 +209,25 @@
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      }
+    ],
+    "name": "ownerID",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "nftID",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -316,7 +346,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],
@@ -380,7 +410,7 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "supply",
         "type": "uint256"
       }
     ],

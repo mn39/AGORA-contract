@@ -9,20 +9,25 @@ import {
 } from "./01_ContractInfo";
 
 async function main() {
-  const [deployer] = await hre.ethers.getSigners();
+  const [signer] = await hre.ethers.getSigners();
 
-  console.log("Send transaction with the account:", deployer.address);
-  console.log("Account balance:", (await deployer.getBalance()).toString());
+  console.log("Send transaction with the account:", signer.address);
+  console.log("Account balance:", (await signer.getBalance()).toString());
 
-  const GovDatabase = await hre.ethers.getContractAt("GovDatabase", GovDatabaseAddress, deployer);
-  const VoteFactory = await hre.ethers.getContractAt("VoteFactory", VoteFactoryAddress, deployer);
-  const AgoraToken = await hre.ethers.getContractAt("AgoraToken", AgoraTokenAddress, deployer);
-  const CwrongNFT = await hre.ethers.getContractAt("CwrongNFT", CwrongNFTAddress, deployer);
+  const GovDatabase = await hre.ethers.getContractAt("GovDatabase", GovDatabaseAddress, signer);
+  const VoteFactory = await hre.ethers.getContractAt("VoteFactory", VoteFactoryAddress, signer);
+  const AgoraToken = await hre.ethers.getContractAt("AgoraToken", AgoraTokenAddress, signer);
+  const CwrongNFT = await hre.ethers.getContractAt("CwrongNFT", CwrongNFTAddress, signer);
 
-  await GovDatabase.setViewAddress(ViewAddress);
-  await VoteFactory.setViewAddress(ViewAddress);
-  await AgoraToken.setViewAddress(ViewAddress);
-  await CwrongNFT.setViewAddress(ViewAddress);
+  await GovDatabase.setViewAddress(ViewAddress).wait();
+  await VoteFactory.setViewAddress(ViewAddress).wait();
+  await AgoraToken.setViewAddress(ViewAddress).wait();
+  await CwrongNFT.setViewAddress(ViewAddress).wait();
+
+  console.log(await GovDatabase.getViewAddress());
+  console.log(await VoteFactory.getViewAddress());
+  console.log(await AgoraToken.getViewAddress());
+  console.log(await CwrongNFT.getViewAddress());
 }
 
 main();
