@@ -11,7 +11,7 @@ interface IGovDatabase {
 
   function getGovAddress(uint256 govIndex) external view returns (address govAddress);
 
-  function setViewAddress(address newView) external;
+  function setViewAddress(address newView) external returns (address);
 
   function setNewGov(address) external returns (uint256);
 }

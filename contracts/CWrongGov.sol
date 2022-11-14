@@ -27,6 +27,11 @@ contract CwrongGov is ICwrongGov {
     _;
   }
 
+  modifier onlyAdmin() {
+    require(IView(_viewAddress).isAdmin(msg.sender) == true, "You are not admin");
+    _;
+  }
+
   constructor(
     uint256 govID,
     string memory govName,
@@ -34,6 +39,7 @@ contract CwrongGov is ICwrongGov {
     address nftAddress
   ) {
     _viewAddress = viewAddress;
+    _nftAddress = nftAddress;
     _govID = govID;
     _govName = govName;
     _leader = CwrongNFT(nftAddress).ownerOf(0);
@@ -42,6 +48,10 @@ contract CwrongGov is ICwrongGov {
     _fundingCount = 0;
     _presentBalance = 0;
     _totalBalance = 0;
+  }
+
+  function getViewAddress() public view returns (address addr) {
+    return _viewAddress;
   }
 
   function getGovID() external view returns (uint256) {
@@ -83,17 +93,17 @@ contract CwrongGov is ICwrongGov {
   }
 
   function getVoteAddress(uint256 voteID) external view returns (address) {
-    require(voteID < _voteCount, "Invalid voteID");
+    require(voteID < _voteCount, "[CwrongGov] Invalid voteID");
     return _voteAddresses[voteID];
   }
 
   function getProposalAddress(uint256 proposalID) external view returns (address) {
-    require(proposalID < _proposalCount, "Invalid proposalID");
+    require(proposalID < _proposalCount, "[CwrongGov] Invalid proposalID");
     return _proposalAddresses[proposalID];
   }
 
   function getFundingAddress(uint256 fundingID) external view returns (address) {
-    require(fundingID < _fundingCount, "Invalid fundingID");
+    require(fundingID < _fundingCount, "[CwrongGov] Invalid fundingID");
     return _fundingAddresses[fundingID];
   }
 
@@ -105,18 +115,25 @@ contract CwrongGov is ICwrongGov {
     return _totalBalance;
   }
 
+  function setViewAddress(address newView) public onlyAdmin returns (address addr) {
+    _viewAddress = newView;
+    return _viewAddress;
+  }
+
   function setGovName(string memory govName) external onlyLeader {
     _govName = govName;
   }
 
   function createVote(
-    uint256 govID,
     uint256 voteID,
     uint256 requiredTime,
     address author
   ) external onlyLeader returns (address) {
     address voteFactory = IView(_viewAddress).getVoteFactoryAddress();
-    address voteAddr = IVoteFactory(voteFactory).createVote(govID, voteID, requiredTime, author);
+    address voteAddr = IVoteFactory(voteFactory).createVote(_govID, voteID, requiredTime, author);
+
+    _voteAddresses[voteID] = voteAddr;
+    _voteCount++;
 
     emit VoteCreated(voteID);
 
@@ -124,7 +141,6 @@ contract CwrongGov is ICwrongGov {
   }
 
   function createVoteOptioned(
-    uint256 govID,
     uint256 voteID,
     uint256 requiredTime,
     address author,
@@ -133,13 +149,16 @@ contract CwrongGov is ICwrongGov {
   ) external onlyLeader returns (address) {
     address voteFactory = IView(_viewAddress).getVoteFactoryAddress();
     address voteAddr = IVoteFactory(voteFactory).createVoteOptioned(
-      govID,
+      _govID,
       voteID,
       requiredTime,
       author,
       optionCount,
       optionNames
     );
+
+    _voteAddresses[voteID] = voteAddr;
+    _voteCount++;
 
     emit VoteCreated(voteID);
 

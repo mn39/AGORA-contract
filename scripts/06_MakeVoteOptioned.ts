@@ -1,4 +1,5 @@
 import { deploy } from "@openzeppelin/hardhat-upgrades/dist/utils";
+import { Bytes } from "ethers";
 import hre from "hardhat";
 import { CwrongGovAddress } from "./01_ContractInfo";
 
@@ -16,7 +17,13 @@ async function main() {
   console.log(`govID : ${govID}`);
   console.log(`voteID : ${voteID}`);
 
-  const tx1 = await CwrongGov.createVote(voteID, 24, signer.address);
+  const options = ["morning", "afternoon", "evening"];
+
+  const tx1 = await CwrongGov.createVoteOptioned(voteID, 24, signer.address, 3, [
+    hre.ethers.utils.formatBytes32String("morning"),
+    hre.ethers.utils.formatBytes32String("afternoon"),
+    hre.ethers.utils.formatBytes32String("evening"),
+  ]);
   await tx1.wait();
 
   const voteAddress = await CwrongGov.getVoteAddress(voteID);

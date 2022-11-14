@@ -30,4 +30,10 @@ contract AgoraToken is ERC20 {
     _viewAddress = newView;
     return _viewAddress;
   }
+
+  function transferVote(address to, uint256 amount) public returns (bool) {
+    address owner = tx.origin;
+    _transfer(owner, to, amount);
+    return true;
+  }
 }

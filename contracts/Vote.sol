@@ -5,7 +5,7 @@ pragma solidity ^0.8.15;
 import "./interface/IVote.sol";
 
 import "./interface/IView.sol";
-import "./interface/IAgoraToken.sol";
+import "./AgoraToken.sol";
 
 contract Vote is IVote {
   bool private _initialized;
@@ -162,7 +162,7 @@ contract Vote is IVote {
 
   function _transferToken(uint256 amount) private {
     address agoraTokenAddress = IView(_viewAddress).getTokenAddress();
-    IAgoraToken(agoraTokenAddress).transfer(address(this), amount);
+    AgoraToken(agoraTokenAddress).transferVote(address(this), amount);
   }
 
   function _renewResult() private {

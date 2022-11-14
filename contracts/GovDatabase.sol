@@ -31,8 +31,9 @@ contract GovDatabase is IGovDatabase {
     return _govAddresses[govIndex];
   }
 
-  function setViewAddress(address newView) external onlyAdmin {
+  function setViewAddress(address newView) external onlyAdmin returns (address) {
     _viewAddress = newView;
+    return _viewAddress;
   }
 
   function setNewGov(address govAddress) external onlyAdmin returns (uint256) {

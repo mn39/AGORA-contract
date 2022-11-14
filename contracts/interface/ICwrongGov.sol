@@ -10,6 +10,8 @@ interface ICwrongGov {
   event ProposalResult(uint256 proposalID, string result);
   event FundingResult(uint256 fundingID, string result);
 
+  function getViewAddress() external view returns (address);
+
   function getGovID() external view returns (uint256);
 
   function getGovName() external view returns (string memory);
@@ -38,17 +40,17 @@ interface ICwrongGov {
 
   function getTotalBalance() external view returns (uint256);
 
+  function setViewAddress(address newView) external returns (address);
+
   function setGovName(string calldata) external;
 
   function createVote(
-    uint256 govID,
     uint256 voteID,
     uint256 requiredTime,
     address author
   ) external returns (address);
 
   function createVoteOptioned(
-    uint256 govID,
     uint256 voteID,
     uint256 requiredTime,
     address author,

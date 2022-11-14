@@ -6,6 +6,7 @@ import {
   VoteFactoryAddress,
   AgoraTokenAddress,
   CwrongNFTAddress,
+  CwrongGovAddress,
 } from "./01_ContractInfo";
 
 async function main() {
@@ -18,6 +19,7 @@ async function main() {
   const VoteFactory = await hre.ethers.getContractAt("VoteFactory", VoteFactoryAddress, signer);
   const AgoraToken = await hre.ethers.getContractAt("AgoraToken", AgoraTokenAddress, signer);
   const CwrongNFT = await hre.ethers.getContractAt("CwrongNFT", CwrongNFTAddress, signer);
+  const CwrongGov = await hre.ethers.getContractAt("CwrongGov", CwrongGovAddress, signer);
 
   const tx1 = await GovDatabase.setViewAddress(ViewAddress);
   await tx1.wait();
@@ -27,11 +29,14 @@ async function main() {
   await tx3.wait();
   const tx4 = await CwrongNFT.setViewAddress(ViewAddress);
   await tx4.wait();
+  const tx5 = await CwrongGov.setViewAddress(ViewAddress);
+  await tx5.wait();
 
   console.log(await GovDatabase.getViewAddress());
   console.log(await VoteFactory.getViewAddress());
   console.log(await AgoraToken.getViewAddress());
   console.log(await CwrongNFT.getViewAddress());
+  console.log(await CwrongGov.getViewAddress());
 }
 
 main();
