@@ -26,12 +26,12 @@ contract VoteFactory is IVoteFactory {
     return _viewAddress;
   }
 
-  function getVoteCount(uint256 govId) external view returns (uint256 count) {
-    return _voteCount[govId];
+  function getVoteCount(uint256 govID) external view returns (uint256 count) {
+    return _voteCount[govID];
   }
 
-  function getVoteAdress(uint256 govId, uint256 voteId) external view returns (address addr) {
-    return _voteAddress[govId][voteId];
+  function getVoteAdress(uint256 govID, uint256 voteID) external view returns (address addr) {
+    return _voteAddress[govID][voteID];
   }
 
   function setViewAddress(address newView) external onlyAdmin returns (address addr) {
@@ -40,41 +40,41 @@ contract VoteFactory is IVoteFactory {
   }
 
   function createVote(
-    uint256 govId,
-    uint256 voteId,
+    uint256 govID,
+    uint256 voteID,
     uint256 requiredTime,
     address author
   ) external returns (address addr) {
-    require(_voteCount[govId] == voteId, "Invalid vote id");
+    require(_voteCount[govID] == voteID, "Invalid vote id");
 
     Vote vote = new Vote();
-    vote.initialize(govId, voteId, requiredTime, author, _viewAddress);
+    vote.initialize(govID, voteID, requiredTime, author, _viewAddress);
 
-    _voteCount[govId]++;
-    _voteAddress[govId][voteId] = address(vote);
+    _voteCount[govID]++;
+    _voteAddress[govID][voteID] = address(vote);
 
-    emit VoteCreated(govId, voteId);
+    emit VoteCreated(govID, voteID);
 
     return address(vote);
   }
 
-  function createVote(
-    uint256 govId,
-    uint256 voteId,
+  function createVoteOptioned(
+    uint256 govID,
+    uint256 voteID,
     uint256 requiredTime,
     address author,
     uint8 optionCount,
     bytes32[] memory optionNames
   ) external returns (address addr) {
-    require(_voteCount[govId] == voteId, "Invalid vote id");
+    require(_voteCount[govID] == voteID, "Invalid vote id");
 
     Vote vote = new Vote();
-    vote.initializeOptioned(govId, voteId, requiredTime, author, optionCount, optionNames, _viewAddress);
+    vote.initializeOptioned(govID, voteID, requiredTime, author, optionCount, optionNames, _viewAddress);
 
-    _voteCount[govId]++;
-    _voteAddress[govId][voteId] = address(vote);
+    _voteCount[govID]++;
+    _voteAddress[govID][voteID] = address(vote);
 
-    emit VoteCreated(govId, voteId);
+    emit VoteCreated(govID, voteID);
 
     return address(vote);
   }

@@ -19,10 +19,14 @@ async function main() {
   const AgoraToken = await hre.ethers.getContractAt("AgoraToken", AgoraTokenAddress, signer);
   const CwrongNFT = await hre.ethers.getContractAt("CwrongNFT", CwrongNFTAddress, signer);
 
-  await GovDatabase.setViewAddress(ViewAddress).wait();
-  await VoteFactory.setViewAddress(ViewAddress).wait();
-  await AgoraToken.setViewAddress(ViewAddress).wait();
-  await CwrongNFT.setViewAddress(ViewAddress).wait();
+  const tx1 = await GovDatabase.setViewAddress(ViewAddress);
+  await tx1.wait();
+  const tx2 = await VoteFactory.setViewAddress(ViewAddress);
+  await tx2.wait();
+  const tx3 = await AgoraToken.setViewAddress(ViewAddress);
+  await tx3.wait();
+  const tx4 = await CwrongNFT.setViewAddress(ViewAddress);
+  await tx4.wait();
 
   console.log(await GovDatabase.getViewAddress());
   console.log(await VoteFactory.getViewAddress());

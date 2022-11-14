@@ -15,10 +15,11 @@ async function main() {
 
   const Vote = await hre.ethers.getContractAt("Vote", voteAddress, signer);
 
-  await Vote.voteOne(0, 10).wait();
+  const tx1 = await Vote.voteOne(0, 10);
+  await tx1.wait();
 
-  const myBalance = await AgoraToken.getBalance(signer);
-  const govBalance = await AgoraToken.getBalance(CwrongGovAddress);
+  const myBalance = await AgoraToken.balanceOf(signer);
+  const govBalance = await AgoraToken.balanceOf(CwrongGovAddress);
 
   console.log(`voteAddress : ${voteAddress}`);
   console.log(`myBalance : ${myBalance}`);

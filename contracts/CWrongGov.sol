@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-IDentifier: MIT
+
 pragma solidity ^0.8.15;
 
 import "./interface/IView.sol";
@@ -9,7 +10,7 @@ import "./CwrongNFT.sol";
 contract CwrongGov is ICwrongGov {
   address private _viewAddress;
   address private _nftAddress;
-  uint256 private _govId;
+  uint256 private _govID;
   string private _govName;
   address private _leader;
   uint256 private _voteCount;
@@ -27,13 +28,13 @@ contract CwrongGov is ICwrongGov {
   }
 
   constructor(
-    uint256 govId,
+    uint256 govID,
     string memory govName,
     address viewAddress,
     address nftAddress
   ) {
     _viewAddress = viewAddress;
-    _govId = govId;
+    _govID = govID;
     _govName = govName;
     _leader = CwrongNFT(nftAddress).ownerOf(0);
     _voteCount = 0;
@@ -43,8 +44,8 @@ contract CwrongGov is ICwrongGov {
     _totalBalance = 0;
   }
 
-  function getGovId() external view returns (uint256) {
-    return _govId;
+  function getGovID() external view returns (uint256) {
+    return _govID;
   }
 
   function getGovName() external view returns (string memory) {
@@ -109,21 +110,21 @@ contract CwrongGov is ICwrongGov {
   }
 
   function createVote(
-    uint256 govId,
+    uint256 govID,
     uint256 voteID,
     uint256 requiredTime,
     address author
   ) external onlyLeader returns (address) {
     address voteFactory = IView(_viewAddress).getVoteFactoryAddress();
-    address voteAddr = IVoteFactory(voteFactory).createVote(govId, voteID, requiredTime, author);
+    address voteAddr = IVoteFactory(voteFactory).createVote(govID, voteID, requiredTime, author);
 
     emit VoteCreated(voteID);
 
     return voteAddr;
   }
 
-  function createVote(
-    uint256 govId,
+  function createVoteOptioned(
+    uint256 govID,
     uint256 voteID,
     uint256 requiredTime,
     address author,
@@ -131,8 +132,8 @@ contract CwrongGov is ICwrongGov {
     bytes32[] memory optionNames
   ) external onlyLeader returns (address) {
     address voteFactory = IView(_viewAddress).getVoteFactoryAddress();
-    address voteAddr = IVoteFactory(voteFactory).createVote(
-      govId,
+    address voteAddr = IVoteFactory(voteFactory).createVoteOptioned(
+      govID,
       voteID,
       requiredTime,
       author,

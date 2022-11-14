@@ -78,7 +78,7 @@
   },
   {
     "inputs": [],
-    "name": "getGovId",
+    "name": "getGovID",
     "outputs": [
       {
         "internalType": "uint256",
@@ -91,7 +91,7 @@
   },
   {
     "inputs": [],
-    "name": "getVoteId",
+    "name": "getVoteID",
     "outputs": [
       {
         "internalType": "uint256",

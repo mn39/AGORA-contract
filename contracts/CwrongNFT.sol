@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-IDentifier: MIT
+
 pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -48,23 +49,23 @@ contract CwrongNFT is ERC721 {
     _URI = baseURI;
   }
 
-  function mint(address to, uint256 tokenId) public onlyAdmin {
-    _safeMint(to, tokenId);
+  function mint(address to, uint256 tokenID) public onlyAdmin {
+    _safeMint(to, tokenID);
   }
 
   function _transfer(
     address from,
     address to,
-    uint256 tokenId
-  ) internal override isZeroID(tokenId) {
+    uint256 tokenID
+  ) internal override isZeroID(tokenID) {
     require(_ownerID[to] == 0, "Receiver already have.");
-    super._transfer(from, to, tokenId);
+    super._transfer(from, to, tokenID);
   }
 
-  function _mint(address to, uint256 tokenId) internal override {
-    super._mint(to, tokenId);
+  function _mint(address to, uint256 tokenID) internal override {
+    super._mint(to, tokenID);
 
-    _ownerID[to] = tokenId;
+    _ownerID[to] = tokenID;
     _totalSupply++;
   }
 

@@ -50,22 +50,28 @@ contract View is IView {
   }
 
   function setTokenAddress(address newAddress) external onlyAdmin {
+    emit TokenChanged(_tokenAddress, newAddress);
+
     _tokenAddress = newAddress;
   }
 
   function setVoteFactoryAddress(address newAddress) external onlyAdmin {
+    emit VoteFactoryChanged(_voteFactoryAddress, newAddress);
     _voteFactoryAddress = newAddress;
   }
 
   function setProposalFactoryAddress(address newAddress) external onlyAdmin {
+    emit ProposalFactoryChanged(_proposalFactoryAddress, newAddress);
     _proposalFactoryAddress = newAddress;
   }
 
   function setFundingFactoryAddress(address newAddress) external onlyAdmin {
+    emit FundingFactoryChanged(_fundingFactoryAddress, newAddress);
     _fundingFactoryAddress = newAddress;
   }
 
   function setGovDatabaseAddress(address newAddress) external onlyAdmin {
+    emit GovDatabaseChanged(_govDatabaseAddress, newAddress);
     _govDatabaseAddress = newAddress;
   }
 }

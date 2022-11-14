@@ -3,7 +3,6 @@
 pragma solidity ^0.8.15;
 
 import "./interface/IGovDatabase.sol";
-
 import "./interface/IView.sol";
 
 contract GovDatabase is IGovDatabase {
@@ -37,8 +36,13 @@ contract GovDatabase is IGovDatabase {
   }
 
   function setNewGov(address govAddress) external onlyAdmin returns (uint256) {
-    _govAddresses[_govCount] = govAddress;
+    uint256 govID = _govCount;
+    _govAddresses[govID] = govAddress;
+
+    emit GovInserted(govID, govAddress);
+
     _govCount++;
-    return _govCount - 1;
+
+    return govID;
   }
 }

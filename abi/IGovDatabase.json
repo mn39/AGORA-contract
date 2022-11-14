@@ -10,12 +10,6 @@
       },
       {
         "indexed": false,
-        "internalType": "string",
-        "name": "govName",
-        "type": "string"
-      },
-      {
-        "indexed": false,
         "internalType": "address",
         "name": "govAddress",
         "type": "address"

@@ -10,9 +10,12 @@ async function main() {
 
   const View = await hre.ethers.getContractAt("View", ViewAddress, signer);
 
-  await View.setTokenAddress(AgoraTokenAddress).wait();
-  await View.setVoteFactoryAddress(VoteFactoryAddress).wait();
-  await View.setGovDatabaseAddress(GovDatabaseAddress).wait();
+  const tx1 = await View.setTokenAddress(AgoraTokenAddress);
+  await tx1.wait();
+  const tx2 = await View.setVoteFactoryAddress(VoteFactoryAddress);
+  await tx2.wait();
+  const tx3 = await View.setGovDatabaseAddress(GovDatabaseAddress);
+  await tx3.wait();
 
   console.log(await View.getTokenAddress());
   console.log(await View.getVoteFactoryAddress());

@@ -25,9 +25,9 @@ interface IVote {
     address
   ) external;
 
-  function getGovId() external view returns (uint256);
+  function getGovID() external view returns (uint256);
 
-  function getVoteId() external view returns (uint256);
+  function getVoteID() external view returns (uint256);
 
   function getCreated() external view returns (uint256);
 

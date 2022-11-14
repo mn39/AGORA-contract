@@ -20,7 +20,7 @@ interface IVoteFactory {
     address
   ) external returns (address);
 
-  function createVote(
+  function createVoteOptioned(
     uint256,
     uint256,
     uint256,

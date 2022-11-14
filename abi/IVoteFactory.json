@@ -85,7 +85,7 @@
         "type": "bytes32[]"
       }
     ],
-    "name": "createVote",
+    "name": "createVoteOptioned",
     "outputs": [
       {
         "internalType": "address",

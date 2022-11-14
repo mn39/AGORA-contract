@@ -78,7 +78,7 @@
   },
   {
     "inputs": [],
-    "name": "getGovId",
+    "name": "getGovID",
     "outputs": [
       {
         "internalType": "uint256",
@@ -91,7 +91,7 @@
   },
   {
     "inputs": [],
-    "name": "getVoteId",
+    "name": "getVoteID",
     "outputs": [
       {
         "internalType": "uint256",
@@ -106,12 +106,12 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "govId",
+        "name": "govID",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "voteId",
+        "name": "voteID",
         "type": "uint256"
       },
       {
@@ -139,12 +139,12 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "govId",
+        "name": "govID",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "voteId",
+        "name": "voteID",
         "type": "uint256"
       },
       {

@@ -3,7 +3,7 @@
 pragma solidity ^0.8.15;
 
 interface IGovDatabase {
-  event GovInserted(uint256 govId, string govName, address govAddress);
+  event GovInserted(uint256 govId, address govAddress);
 
   function getViewAddress() external view returns (address);
 

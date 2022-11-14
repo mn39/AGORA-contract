@@ -10,9 +10,11 @@ async function main() {
 
   const GovDatabase = await hre.ethers.getContractAt("GovDatabase", GovDatabaseAddress, signer);
 
-  const govAddress = await GovDatabase.setNewGov(CwrongGovAddress).wait();
+  const tx1 = await GovDatabase.setNewGov(CwrongGovAddress);
+  await tx1.wait();
 
-  console.log(govAddress);
+  const govAddress = await GovDatabase.getGovAddress(0);
+
   console.log(`GovCount : ${await GovDatabase.getGovCount()}`);
   console.log(`CwrongGovAddress : ${await GovDatabase.getGovAddress(0)}`);
 }

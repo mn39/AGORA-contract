@@ -13,11 +13,17 @@ async function main() {
   const govID = await CwrongGov.getGovId();
   const voteID = await CwrongGov.getVoteCount();
 
+  console.log(`govID : ${govID}`);
+  console.log(`voteID : ${voteID}`);
+
   const time = new Date();
   time.setDate(time.getDate() + 1);
+  const deadline = time.getTime();
 
-  const voteAddress = await CwrongGov.createVote(govID, voteID, time, signer.address);
-  voteAddress.wait();
+  const tx1 = await CwrongGov.createVote(govID, voteID, deadline, signer.address);
+  await tx1.wait();
+
+  const voteAddress = CwrongGov.getVoteAddress(voteID);
 
   console.log(`voteAddress : ${voteAddress}`);
   console.log(`VoteCount : ${await CwrongGov.getVoteCount()}`);

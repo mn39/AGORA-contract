@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-IDentifier: UNLICENSED
 
 pragma solidity ^0.8.15;
 
@@ -12,8 +12,8 @@ contract Vote is IVote {
 
   address private _viewAddress;
 
-  uint256 private _govId;
-  uint256 private _voteId;
+  uint256 private _govID;
+  uint256 private _voteID;
   uint256 private _created;
   uint256 private _deadline;
 
@@ -36,8 +36,8 @@ contract Vote is IVote {
   mapping(uint8 => Option) private _optionStatus;
 
   function initialize(
-    uint256 govId,
-    uint256 voteId,
+    uint256 govID,
+    uint256 voteID,
     uint256 requiredTime,
     address author,
     address viewAddress
@@ -47,8 +47,8 @@ contract Vote is IVote {
 
     _viewAddress = viewAddress;
 
-    _govId = govId;
-    _voteId = voteId;
+    _govID = govID;
+    _voteID = voteID;
     _created = block.timestamp;
     _deadline = _created + requiredTime * 1 hours;
 
@@ -68,8 +68,8 @@ contract Vote is IVote {
   }
 
   function initializeOptioned(
-    uint256 govId,
-    uint256 voteId,
+    uint256 govID,
+    uint256 voteID,
     uint256 requiredTime,
     address author,
     uint8 optionCount,
@@ -81,8 +81,8 @@ contract Vote is IVote {
 
     _viewAddress = viewAddress;
 
-    _govId = govId;
-    _voteId = voteId;
+    _govID = govID;
+    _voteID = voteID;
     _created = block.timestamp;
     _deadline = _created + requiredTime * 1 hours;
 
@@ -102,12 +102,12 @@ contract Vote is IVote {
     emit VoteStart(_created);
   }
 
-  function getGovId() external view returns (uint256) {
-    return _govId;
+  function getGovID() external view returns (uint256) {
+    return _govID;
   }
 
-  function getVoteId() external view returns (uint256) {
-    return _voteId;
+  function getVoteID() external view returns (uint256) {
+    return _voteID;
   }
 
   function getCreated() external view returns (uint256) {
