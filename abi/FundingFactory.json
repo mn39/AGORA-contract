@@ -1,5 +1,16 @@
 [
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "viewAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -15,37 +26,42 @@
         "type": "uint256"
       }
     ],
-    "name": "VoteCreated",
+    "name": "FundingCreated",
     "type": "event"
   },
   {
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "govID",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "fundingID",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "requiredTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fundingAmount",
         "type": "uint256"
       },
       {
         "internalType": "address",
-        "name": "",
+        "name": "writer",
         "type": "address"
       }
     ],
-    "name": "createVote",
+    "name": "createFunding",
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],
@@ -56,44 +72,43 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "govID",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "fundingID",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      },
-      {
-        "internalType": "bytes32[]",
-        "name": "",
-        "type": "bytes32[]"
       }
     ],
-    "name": "createVoteOptioned",
+    "name": "getFundingAddress",
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "govID",
+        "type": "uint256"
+      }
+    ],
+    "name": "getFundingCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "count",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -102,7 +117,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],
@@ -112,51 +127,8 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "getVoteAddress",
-    "outputs": [
-      {
         "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "getVoteCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
+        "name": "newView",
         "type": "address"
       }
     ],
@@ -164,7 +136,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "addr",
         "type": "address"
       }
     ],

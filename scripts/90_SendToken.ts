@@ -10,7 +10,7 @@ async function main() {
 
   const AgoraToken = await hre.ethers.getContractAt("AgoraToken", AgoraTokenAddress, signer);
 
-  const receiver = voter.address;
+  const receiver = "voter.address";
 
   const tx1 = await AgoraToken.transfer(receiver, 1000);
   await tx1.wait();

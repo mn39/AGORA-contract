@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.15;
 
-interface ICwrongGov {
+interface IAgoraGov {
   event VoteCreated(uint256 voteID);
   event ProposalCreated(uint256 proposalID);
   event FundingCreated(uint256 fundingID);
@@ -40,25 +40,21 @@ interface ICwrongGov {
 
   function getTotalBalance() external view returns (uint256);
 
+  function tokenWithdraw(address addr, uint256 amount) external returns (bool);
+
   function setViewAddress(address newView) external returns (address);
 
   function setGovName(string calldata) external;
 
-  function createVote(
-    uint256 voteID,
-    uint256 requiredTime,
-    address author
-  ) external returns (address);
+  function createVote(uint256 requiredTime) external returns (address);
 
   function createVoteOptioned(
-    uint256 voteID,
     uint256 requiredTime,
-    address author,
     uint8 optionCount,
     bytes32[] calldata
   ) external returns (address);
 
-  function createProposal() external returns (address);
+  function createProposal(uint256 requiredTime) external returns (address);
 
-  function createFunding() external returns (address);
+  function createFunding(uint256 requiredTime, uint256 fundingAmount) external returns (address);
 }

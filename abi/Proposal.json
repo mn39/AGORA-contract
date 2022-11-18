@@ -4,37 +4,12 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "option",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "Vote",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
         "internalType": "string",
         "name": "result",
         "type": "string"
       }
     ],
-    "name": "VoteFinished",
+    "name": "ProposalFinished",
     "type": "event"
   },
   {
@@ -47,7 +22,26 @@
         "type": "uint256"
       }
     ],
-    "name": "VoteStart",
+    "name": "ProposalStart",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "option",
+        "type": "string"
+      }
+    ],
+    "name": "Vote",
     "type": "event"
   },
   {
@@ -104,12 +98,25 @@
   },
   {
     "inputs": [],
-    "name": "getVoteID",
+    "name": "getProposalID",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getProposer",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -124,7 +131,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "voteID",
+        "name": "proposalID",
         "type": "uint256"
       },
       {
@@ -134,7 +141,7 @@
       },
       {
         "internalType": "address",
-        "name": "author",
+        "name": "proposer",
         "type": "address"
       },
       {
@@ -149,57 +156,27 @@
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "isEnable",
+    "outputs": [
       {
-        "internalType": "uint256",
-        "name": "govID",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "voteID",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "requiredTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "author",
-        "type": "address"
-      },
-      {
-        "internalType": "uint8",
-        "name": "optionCount",
-        "type": "uint8"
-      },
-      {
-        "internalType": "bytes32[]",
-        "name": "optionNames",
-        "type": "bytes32[]"
-      },
-      {
-        "internalType": "address",
-        "name": "viewAddress",
-        "type": "address"
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
-    "name": "initializeOptioned",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "caller",
+        "name": "addr",
         "type": "address"
       }
     ],
-    "name": "isAuthor",
+    "name": "isProposer",
     "outputs": [
       {
         "internalType": "bool",
@@ -212,12 +189,12 @@
   },
   {
     "inputs": [],
-    "name": "isOption",
+    "name": "proposalResult",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "string",
         "name": "",
-        "type": "bool"
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -229,11 +206,6 @@
         "internalType": "uint8",
         "name": "option",
         "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
       }
     ],
     "name": "voteOne",
@@ -249,26 +221,8 @@
   },
   {
     "inputs": [],
-    "name": "voteResult",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "voteStatus",
     "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
       {
         "internalType": "uint256",
         "name": "",

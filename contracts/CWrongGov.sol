@@ -4,10 +4,13 @@ pragma solidity ^0.8.15;
 
 import "./interface/IView.sol";
 import "./interface/IVoteFactory.sol";
-import "./interface/ICwrongGov.sol";
+import "./interface/IProposalFactory.sol";
+import "./interface/IFundingFactory.sol";
+import "./interface/IAgoraGov.sol";
+import "./AgoraToken.sol";
 import "./CwrongNFT.sol";
 
-contract CwrongGov is ICwrongGov {
+contract CwrongGov is IAgoraGov {
   address private _viewAddress;
   address private _nftAddress;
   uint256 private _govID;
@@ -19,16 +22,20 @@ contract CwrongGov is ICwrongGov {
   mapping(uint256 => address) private _voteAddresses;
   mapping(uint256 => address) private _proposalAddresses;
   mapping(uint256 => address) private _fundingAddresses;
-  uint256 private _presentBalance;
-  uint256 private _totalBalance;
+  uint256 private _usedTokenAmount;
+
+  modifier onlyAdmin() {
+    require(IView(_viewAddress).isAdmin(msg.sender) == true, "You are not admin");
+    _;
+  }
 
   modifier onlyLeader() {
     require(msg.sender == _leader, "You are not leader");
     _;
   }
 
-  modifier onlyAdmin() {
-    require(IView(_viewAddress).isAdmin(msg.sender) == true, "You are not admin");
+  modifier onlyLeaderOrMember() {
+    require(msg.sender == _leader || CwrongNFT(_nftAddress).ownerID(msg.sender) > 0, "You are not leader");
     _;
   }
 
@@ -46,8 +53,7 @@ contract CwrongGov is ICwrongGov {
     _voteCount = 0;
     _proposalCount = 0;
     _fundingCount = 0;
-    _presentBalance = 0;
-    _totalBalance = 0;
+    _usedTokenAmount = 0;
   }
 
   function getViewAddress() public view returns (address addr) {
@@ -108,11 +114,25 @@ contract CwrongGov is ICwrongGov {
   }
 
   function getPresentBalance() external view returns (uint256) {
-    return _presentBalance;
+    address agoraToken = IView(_viewAddress).getTokenAddress();
+    uint256 balance = AgoraToken(agoraToken).balanceOf(address(this));
+    return balance;
   }
 
   function getTotalBalance() external view returns (uint256) {
-    return _totalBalance;
+    address agoraToken = IView(_viewAddress).getTokenAddress();
+    uint256 balance = AgoraToken(agoraToken).balanceOf(address(this));
+    return balance + _usedTokenAmount;
+  }
+
+  function tokenWithdraw(address addr, uint256 amount) external returns (bool) {
+    address agoraToken = IView(_viewAddress).getTokenAddress();
+
+    _usedTokenAmount += amount;
+
+    AgoraToken(agoraToken).transfer(addr, amount);
+
+    return true;
   }
 
   function setViewAddress(address newView) public onlyAdmin returns (address addr) {
@@ -124,13 +144,11 @@ contract CwrongGov is ICwrongGov {
     _govName = govName;
   }
 
-  function createVote(
-    uint256 voteID,
-    uint256 requiredTime,
-    address author
-  ) external onlyLeader returns (address) {
+  function createVote(uint256 requiredTime) external onlyLeader returns (address) {
+    uint256 voteID = _voteCount;
+
     address voteFactory = IView(_viewAddress).getVoteFactoryAddress();
-    address voteAddr = IVoteFactory(voteFactory).createVote(_govID, voteID, requiredTime, author);
+    address voteAddr = IVoteFactory(voteFactory).createVote(_govID, voteID, requiredTime, msg.sender);
 
     _voteAddresses[voteID] = voteAddr;
     _voteCount++;
@@ -141,18 +159,18 @@ contract CwrongGov is ICwrongGov {
   }
 
   function createVoteOptioned(
-    uint256 voteID,
     uint256 requiredTime,
-    address author,
     uint8 optionCount,
     bytes32[] memory optionNames
   ) external onlyLeader returns (address) {
+    uint256 voteID = _voteCount;
+
     address voteFactory = IView(_viewAddress).getVoteFactoryAddress();
     address voteAddr = IVoteFactory(voteFactory).createVoteOptioned(
       _govID,
       voteID,
       requiredTime,
-      author,
+      msg.sender,
       optionCount,
       optionNames
     );
@@ -165,7 +183,42 @@ contract CwrongGov is ICwrongGov {
     return voteAddr;
   }
 
-  function createProposal() external onlyLeader returns (address) {}
+  function createProposal(uint256 requiredTime) external onlyLeaderOrMember returns (address) {
+    uint256 proposalID = _proposalCount;
 
-  function createFunding() external onlyLeader returns (address) {}
+    address proposalFactory = IView(_viewAddress).getProposalFactoryAddress();
+    address proposalAddr = IProposalFactory(proposalFactory).createProposal(
+      _govID,
+      proposalID,
+      requiredTime,
+      msg.sender
+    );
+
+    _proposalAddresses[proposalID] = proposalAddr;
+    _proposalCount++;
+
+    emit ProposalCreated(proposalID);
+
+    return proposalAddr;
+  }
+
+  function createFunding(uint256 requiredTime, uint256 fundingAmount) external onlyLeader returns (address) {
+    uint256 fundingID = _fundingCount;
+
+    address fundingFactory = IView(_viewAddress).getFundingFactoryAddress();
+    address fundingAddr = IFundingFactory(fundingFactory).createFunding(
+      _govID,
+      fundingID,
+      requiredTime,
+      fundingAmount,
+      msg.sender
+    );
+
+    _fundingAddresses[fundingID] = fundingAddr;
+    _fundingCount++;
+
+    emit FundingCreated(fundingID);
+
+    return fundingAddr;
+  }
 }

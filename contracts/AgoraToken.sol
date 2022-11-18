@@ -36,4 +36,9 @@ contract AgoraToken is ERC20 {
     _transfer(owner, to, amount);
     return true;
   }
+
+  function mintFor(address to, uint256 amount) public returns (bool isSuccess) {
+    _mint(to, amount);
+    return true;
+  }
 }

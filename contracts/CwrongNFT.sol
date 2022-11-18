@@ -2,10 +2,11 @@
 
 pragma solidity ^0.8.15;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "./common/ERC721.sol";
 import "./interface/IView.sol";
+import "./interface/IAgoraNFT.sol";
 
-contract CwrongNFT is ERC721 {
+contract CwrongNFT is ERC721, IAgoraNFT {
   address private _viewAddress;
   address private _leader;
   string private _URI;
@@ -37,7 +38,11 @@ contract CwrongNFT is ERC721 {
   }
 
   function ownerID(address addr) public view returns (uint256 nftID) {
-    return _ownerID[addr];
+    if (addr == _leader) return 0;
+    uint256 id = _ownerID[addr];
+
+    require(id != 0, "You don't have NFT");
+    return id;
   }
 
   function setViewAddress(address newView) public onlyAdmin returns (address addr) {

@@ -30,7 +30,7 @@ contract VoteFactory is IVoteFactory {
     return _voteCount[govID];
   }
 
-  function getVoteAdress(uint256 govID, uint256 voteID) external view returns (address addr) {
+  function getVoteAddress(uint256 govID, uint256 voteID) external view returns (address addr) {
     return _voteAddress[govID][voteID];
   }
 

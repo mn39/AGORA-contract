@@ -9,7 +9,7 @@ interface IVoteFactory {
 
   function getVoteCount(uint256) external view returns (uint256);
 
-  function getVoteAdress(uint256, uint256) external view returns (address);
+  function getVoteAddress(uint256, uint256) external view returns (address);
 
   function setViewAddress(address) external returns (address);
 

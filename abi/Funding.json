@@ -4,37 +4,12 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "option",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "Vote",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
         "internalType": "string",
         "name": "result",
         "type": "string"
       }
     ],
-    "name": "VoteFinished",
+    "name": "FundingFinished",
     "type": "event"
   },
   {
@@ -47,7 +22,26 @@
         "type": "uint256"
       }
     ],
-    "name": "VoteStart",
+    "name": "FundingStart",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "option",
+        "type": "string"
+      }
+    ],
+    "name": "Vote",
     "type": "event"
   },
   {
@@ -61,6 +55,19 @@
       }
     ],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fundingResult",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -91,6 +98,32 @@
   },
   {
     "inputs": [],
+    "name": "getFundingAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getFundingID",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getGovID",
     "outputs": [
       {
@@ -104,12 +137,12 @@
   },
   {
     "inputs": [],
-    "name": "getVoteID",
+    "name": "getWriter",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "address",
         "name": "",
-        "type": "uint256"
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -124,7 +157,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "voteID",
+        "name": "fundingID",
         "type": "uint256"
       },
       {
@@ -133,8 +166,13 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "fundingAmount",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
-        "name": "author",
+        "name": "writer",
         "type": "address"
       },
       {
@@ -149,57 +187,8 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "govID",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "voteID",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "requiredTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "author",
-        "type": "address"
-      },
-      {
-        "internalType": "uint8",
-        "name": "optionCount",
-        "type": "uint8"
-      },
-      {
-        "internalType": "bytes32[]",
-        "name": "optionNames",
-        "type": "bytes32[]"
-      },
-      {
-        "internalType": "address",
-        "name": "viewAddress",
-        "type": "address"
-      }
-    ],
-    "name": "initializeOptioned",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "caller",
-        "type": "address"
-      }
-    ],
-    "name": "isAuthor",
+    "inputs": [],
+    "name": "isEnable",
     "outputs": [
       {
         "internalType": "bool",
@@ -211,8 +200,14 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "isOption",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      }
+    ],
+    "name": "isWriter",
     "outputs": [
       {
         "internalType": "bool",
@@ -229,11 +224,6 @@
         "internalType": "uint8",
         "name": "option",
         "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
       }
     ],
     "name": "voteOne",
@@ -249,26 +239,8 @@
   },
   {
     "inputs": [],
-    "name": "voteResult",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "voteStatus",
     "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
       {
         "internalType": "uint256",
         "name": "",
