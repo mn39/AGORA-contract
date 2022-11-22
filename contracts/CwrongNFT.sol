@@ -6,7 +6,11 @@ import "./common/ERC721.sol";
 import "./interface/IView.sol";
 import "./interface/IAgoraNFT.sol";
 
+import "./common/StringsUpgradeable.sol";
+
 contract CwrongNFT is ERC721, IAgoraNFT {
+  using StringsUpgradeable for uint256;
+
   address private _viewAddress;
   address private _leader;
   string private _URI;
@@ -43,6 +47,11 @@ contract CwrongNFT is ERC721, IAgoraNFT {
 
     require(id != 0, "You don't have NFT");
     return id;
+  }
+
+  function tokenURI(uint256 tokenId) public view override returns (string memory) {
+    string memory baseURI = _baseURI();
+    return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI)) : "";
   }
 
   function setViewAddress(address newView) public onlyAdmin returns (address addr) {

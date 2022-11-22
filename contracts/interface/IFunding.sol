@@ -41,6 +41,8 @@ interface IFunding {
       uint256
     );
 
+  function getParticipants() external view returns (uint256);
+
   function voteOne(uint8) external returns (bool);
 
   function fundingResult() external view returns (string memory);

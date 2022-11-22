@@ -19,7 +19,7 @@ async function main() {
 
   const options = ["morning", "afternoon", "evening"];
 
-  const tx1 = await CwrongGov.createVoteOptioned(24, 3, [
+  const tx1 = await CwrongGov.createVoteOptioned(1, 3, [
     hre.ethers.utils.formatBytes32String("morning"),
     hre.ethers.utils.formatBytes32String("afternoon"),
     hre.ethers.utils.formatBytes32String("evening"),

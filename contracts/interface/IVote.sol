@@ -33,7 +33,11 @@ interface IVote {
 
   function getDeadline() external view returns (uint256);
 
+  function isEnable() external view returns (bool);
+
   function isOption() external view returns (bool);
+
+  function getOptionCount() external view returns (uint256);
 
   function isAuthor(address) external view returns (bool);
 

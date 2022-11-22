@@ -104,6 +104,19 @@
   },
   {
     "inputs": [],
+    "name": "getOptionCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getVoteID",
     "outputs": [
       {
@@ -200,6 +213,19 @@
       }
     ],
     "name": "isAuthor",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "isEnable",
     "outputs": [
       {
         "internalType": "bool",

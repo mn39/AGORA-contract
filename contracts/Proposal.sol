@@ -107,6 +107,10 @@ contract Proposal is IProposal {
     return (_for, _against, _abstain);
   }
 
+  function getParticipants() external view returns (uint256) {
+    return _participants;
+  }
+
   function voteOne(uint8 option) external notProposer onlyMember returns (bool) {
     require(option == 0 || option == 1 || option == 2, "Proposal: Option is weird");
     require(_isEnable == true, "Proposal is already finished");

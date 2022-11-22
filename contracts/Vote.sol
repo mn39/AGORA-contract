@@ -121,8 +121,16 @@ contract Vote is IVote {
     return _deadline;
   }
 
+  function isEnable() external view returns (bool) {
+    return _isEnable;
+  }
+
   function isOption() external view returns (bool) {
     return (_optionCount != 0);
+  }
+
+  function getOptionCount() external view returns (uint256) {
+    return _optionCount;
   }
 
   function isAuthor(address caller) external view returns (bool) {
@@ -174,7 +182,7 @@ contract Vote is IVote {
 
   function finish() external returns (bool) {
     require(_isEnable == true, "Vote is already finished");
-    require(_isfinish() == false, "Vote is still Ongoing");
+    require(_isfinish() == true, "Vote is still Ongoing");
     require(msg.sender == _author, "Only leader can finish vote");
 
     _finish();

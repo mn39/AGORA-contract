@@ -111,6 +111,10 @@ contract Funding is IFunding {
     return (_for, _against, _abstain);
   }
 
+  function getParticipants() external view returns (uint256) {
+    return _participants;
+  }
+
   function voteOne(uint8 option) external onlyMember returns (bool) {
     require(option == 0 || option == 1 || option == 2, "Funding: Option is weird");
     require(_isEnable == true, "Funding is already finished");

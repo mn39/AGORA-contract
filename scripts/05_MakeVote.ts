@@ -16,7 +16,7 @@ async function main() {
   console.log(`govID : ${govID}`);
   console.log(`voteID : ${voteID}`);
 
-  const tx1 = await CwrongGov.createVote(24);
+  const tx1 = await CwrongGov.createVote(1);
   await tx1.wait();
 
   const voteAddress = await CwrongGov.getVoteAddress(voteID);

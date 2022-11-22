@@ -10,14 +10,19 @@ async function main() {
 
   const CwrongNFT = await hre.ethers.getContractAt("CwrongNFT", CwrongNFTAddress, signer);
 
-  const tx1 = await CwrongNFT.mint(member2.address, 2);
+  const tx1 = await CwrongNFT.mint(member.address, 1);
   await tx1.wait();
 
+  const tx2 = await CwrongNFT.mint(member2.address, 2);
+  await tx2.wait();
+
   const nftID_leader = await CwrongNFT.ownerID(signer.address);
-  const nftID_member = await CwrongNFT.ownerID(member2.address);
+  const nftID_member = await CwrongNFT.ownerID(member.address);
+  const nftID_member2 = await CwrongNFT.ownerID(member2.address);
 
   console.log(`leader nft id is ${nftID_leader}`);
   console.log(`member nft id is ${nftID_member}`);
+  console.log(`mem2ber nft id is ${nftID_member2}`);
 }
 
 main();
